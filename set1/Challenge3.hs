@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Challenge3
    where
 
@@ -7,16 +5,16 @@ import qualified Challenge2
 import Challenge1
 
 import Data.Word
-import Data.List
+import Data.List as L
 import qualified Data.ByteString.Base64 as Base64 (decode, encode)
 import qualified Data.ByteString.Base16 as Base16 (decode, encode)
-import qualified Data.ByteString as B --(getLine)
-import Data.ByteString.UTF8 (toString)
+import qualified Data.ByteString as B (getLine,unpack,pack,ByteString)
+import qualified Data.ByteString.Char8 as B8 (unpack)
 
 
-freqList = "etaonihsrlducmwyfgpbvkjxqz"
+freqList = "eEtTaAoOnNiIhHsSrRlLdDuUcCmMwWyYfFgGpPbBvVkKjJxXqQzZ"
 
-voto = sum . map (\x -> voto' x freqList 27)
+voto = sum . map (\x -> voto' x freqList 54)
    where
       voto' c [] n = n
       voto' c (m:l) n
@@ -43,15 +41,16 @@ fixedXOR s1 s2 =
    let (a:b:_) = sameLenth s1 s2
     in Challenge2.fixedXOR a b
 
-singleByteXORcipher = do
-   w <- readHex
-   let decipher = toString . fixedXOR w . B.pack . singleton
+singleByteXORcipher w = do
+   let decipher = B8.unpack . fixedXOR w . B.pack . singleton
    --p <- map (B.pack . singleton) [0::Word8 .. 255 :: Word8]
-   let translations = map (\k -> (k, voto $ decipher k, decipher k)) [0::Word8 .. 255 :: Word8]
+   let translations = map (\k -> (k, decipher k, voto $ decipher k)) [0::Word8 .. 255 :: Word8]
 
-   print . maximum' $ translations
-      where
-         maximum' l = maximum'' (0::Word8,0,"") l
-            where
-               maximum'' (a,b,c) [] = (a,c)
-               maximum'' (a,b,c) ((e,f,g):l) = if b>f then maximum'' (a,b,c) l else maximum'' (e,f,g) l
+   Challenge3.maximum translations
+
+maximum l = maximum'' (0::Word8,"",0) l
+   where
+      maximum'' (a,b,c) [] = (a,b,c)
+      maximum'' (a,b,c) ((e,f,g):l) = if c>g then maximum'' (a,b,c) l else maximum'' (e,f,g) l
+
+-- solution = singleByteXORcipher <$> readHex
