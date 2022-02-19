@@ -3,23 +3,16 @@ module Challenge3
 
 import qualified Challenge2
 import Challenge1
+import EnglishDetector
 
 import Data.Word
+import qualified Data.Map.Strict as M
 import Data.List as L
 import qualified Data.ByteString.Base64 as Base64 (decode, encode)
 import qualified Data.ByteString.Base16 as Base16 (decode, encode)
 import qualified Data.ByteString as B (getLine,unpack,pack,ByteString)
 import qualified Data.ByteString.Char8 as B8 (unpack)
 
-
-freqList = "eEtTaAoOnNiIhHsSrRlLdDuUcCmMwWyYfFgGpPbBvVkKjJxXqQzZ"
-
-voto = sum . map (\x -> voto' x freqList 54)
-   where
-      voto' c [] n = n
-      voto' c (m:l) n
-        | c == m = n
-        | otherwise = voto' c l (n-1)
 
 sameLenth :: B.ByteString -> B.ByteString -> [B.ByteString]
 sameLenth r t =
