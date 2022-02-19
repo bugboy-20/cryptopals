@@ -12,9 +12,12 @@ import qualified Data.ByteString as B (getLine,unpack,pack,ByteString)
 import qualified Data.ByteString.Char8 as B8 (getLine,unpack,pack,ByteString)
 import Data.ByteString.UTF8 (toString)
 
-readLines = lines <$> readFile "4.txt"
+readLines = map (hexToByteString . B8.pack) . lines <$> readFile "4.txt"
 
 --detectSingleCharacterXOR :: [B.ByteString] -> (Word8, String, Integer)
 detectSingleCharacterXOR  = map singleByteXORcipher
 
-solution = Challenge3.maximum . detectSingleCharacterXOR . map B8.pack <$> readLines
+--solution = detectSingleCharacterXOR . map B8.pack <$> readLines
+wrsolution = solution >>= writeFile "./ch4sol" . show 
+
+solution = Challenge3.maximum . detectSingleCharacterXOR <$> readLines
