@@ -17,4 +17,4 @@ readLines = lines <$> readFile "4.txt"
 --detectSingleCharacterXOR :: [B.ByteString] -> (Word8, String, Integer)
 detectSingleCharacterXOR  = map singleByteXORcipher
 
-solution = detectSingleCharacterXOR . map B8.pack <$> readLines
+solution = Challenge3.maximum . detectSingleCharacterXOR . map B8.pack <$> readLines

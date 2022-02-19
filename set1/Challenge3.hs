@@ -34,12 +34,12 @@ fixedXOR s1 s2 =
    let (a:b:_) = sameLenth s1 s2
     in Challenge2.fixedXOR a b
 
-singleByteXORcipher w = do
+singleByteXORcipher w =
    let decipher = B8.unpack . fixedXOR w . B.pack . singleton
    --p <- map (B.pack . singleton) [0::Word8 .. 255 :: Word8]
-   let translations = map (\k -> (k, decipher k, voto $ decipher k)) [0::Word8 .. 255 :: Word8]
+       translations = map (\k -> (k, decipher k, voto $ decipher k)) [0::Word8 .. 255 :: Word8]
 
-   Challenge3.maximum translations
+   in Challenge3.maximum translations
 
 maximum l = maximum'' (0::Word8,"",0) l
    where
