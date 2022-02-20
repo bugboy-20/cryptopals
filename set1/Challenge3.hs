@@ -23,12 +23,17 @@ sameLenth r t =
      sameLenth' :: [Word8] -> [Word8] -> [[Word8]]
      sameLenth' a b
        | length a == length b = [a,b]
-       | length a > length b = [a, extend b $ length a - length b]
-       | length a < length b = [extend a $ length b - length a,b]
+       | length a > length b = [a, resize b $ length a]
+       | length a < length b = [resize a $ length b, b]
 
 
 extend a 0 = a
 extend a n = (head a::Word8) : extend a (n-1)
+
+resize a n
+  | length a > n = take n a
+  | otherwise = a ++ resize a (n-length a)
+
 
 fixedXOR s1 s2 =
    let (a:b:_) = sameLenth s1 s2
