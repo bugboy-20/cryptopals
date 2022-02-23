@@ -13,4 +13,5 @@ fixedXORIO = do
    a <- readHex
    Base16.encode . fixedXOR a <$> readHex
 
-fixedXOR a b = B.pack $ B.zipWith xor a b
+--fixedXOR a b = B.pack $ B.zipWith xor a b
+fixedXOR = (B.pack .) . B.zipWith xor
