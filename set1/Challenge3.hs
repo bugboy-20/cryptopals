@@ -46,6 +46,7 @@ singleByteXORcipher w =
 
    in Challenge3.maximum translations
 
+maximum :: (Ord c, Num c) => [(Word8, String, c)] -> (Word8, String, c)
 maximum l = maximum'' (0::Word8,"",0) l
    where
       maximum'' (a,b,c) [] = (a,b,c)
