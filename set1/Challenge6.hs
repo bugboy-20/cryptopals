@@ -53,6 +53,8 @@ mergeChunks (n,d) = (n, mergeChunks')
       mergeChunks' = let (ww, ss, ii) = unzip3 d
                       in (B.pack ww, concat . transpose $ ss, sum ii)
 
+   {--
 solve = do
    m <- readBase64File "6.txt"
    return $ repeatingKeyBreaker . cipherChunks . splitAndTranspose . B.unpack $ m
+   --}
